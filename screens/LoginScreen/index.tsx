@@ -5,10 +5,10 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // r nav
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
 // rne
 import { Button, Input, Image } from "@rneui/themed";
@@ -22,12 +22,32 @@ import { SIGNAL_URL } from "../../raw/constants";
 // typings
 import { LoginScreenNavigationProp } from "../../typings";
 
+// firebase
+import { auth } from "../../lib/firebase.config";
+import {
+  signInWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from "firebase/auth";
+
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const nav = useNavigation<LoginScreenNavigationProp>();
 
-  const signIn = () => {}
+  const signIn = () => {};
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      console.log(authUser)
+      if (authUser) {
+        nav.replace("Home");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -46,14 +66,12 @@ const LoginScreen = () => {
           autoFocus
           value={email}
           onChangeText={(text) => setEmail(text)}
-          containerStyle={styles.inputContainer}
         />
         <Input
           placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={(text) => setPassword(text)}
-          containerStyle={styles.inputContainer}
         />
       </View>
 

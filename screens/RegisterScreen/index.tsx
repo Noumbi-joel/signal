@@ -7,13 +7,31 @@ import { StatusBar } from "expo-status-bar";
 // rne
 import { Button, Input, Text } from "@rneui/themed";
 
+// firebase
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  UserCredential,
+} from "firebase/auth";
+import { auth } from "../../lib/firebase.config";
+import { PROFILE_URL } from "../../raw/constants";
+
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const register = () => {};
+  const register = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((authUser: UserCredential) => {
+        updateProfile(auth.currentUser!, {
+          displayName: name,
+          photoURL: imageUrl || PROFILE_URL,
+        });
+      })
+      .catch((error) => alert(error.message));
+  };
   return (
     <KeyboardAvoidingView
       behavior="padding"
