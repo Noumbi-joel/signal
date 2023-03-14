@@ -14,7 +14,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 import { auth } from "../../lib/firebase.config";
-import { PROFILE_URL } from "../../raw/constants";
+import { PHOTO_URL, PROFILE_URL } from "../../raw/constants";
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState("");
@@ -22,12 +22,12 @@ const RegisterScreen = () => {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const register = () => {
+  const register = async () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((authUser: UserCredential) => {
         updateProfile(auth.currentUser!, {
           displayName: name,
-          photoURL: imageUrl || PROFILE_URL,
+          photoURL: PHOTO_URL,
         });
       })
       .catch((error) => alert(error.message));

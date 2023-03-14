@@ -35,14 +35,19 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("");
   const nav = useNavigation<LoginScreenNavigationProp>();
 
-  const signIn = () => {};
+  const signIn = async () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((authUser) => {
+        authUser?.user ? () => nav.navigate("Home") : null;
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      console.log(authUser)
-      if (authUser) {
-        nav.replace("Home");
-      }
+      if (authUser) nav.replace("Home");
     });
 
     return unsubscribe;

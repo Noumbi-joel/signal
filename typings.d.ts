@@ -5,12 +5,17 @@ export type RootStackParamList = {
   Chat: undefined;
 };
 
-export type AuthStackNavigatorParamList = {
-  Login: undefined;
-  Register: undefined;
-};
-
 export type LoginScreenNavigationProp = NativeStackNavigationProp<
-  AuthStackNavigatorParamList,
-  "Register"
+  RootStackParamList,
+  "Login"
+>;
+
+export type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
+
+export type AddChatScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "AddChat"
 >;
